@@ -286,6 +286,12 @@ set(KERNEL_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/Arch/x86/${KERNEL_ARCH}/InterruptEntry.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Arch/x86/${KERNEL_ARCH}/Processor.cpp
 )
+if("${SERENITY_ARCH}" STREQUAL "x86_64")
+    set(KERNEL_SOURCES
+        ${KERNEL_SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Arch/x86/${KERNEL_ARCH}/SyscallEntry.cpp
+    )
+endif()
 
 set(KERNEL_SOURCES
     ${KERNEL_SOURCES}

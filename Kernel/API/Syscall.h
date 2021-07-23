@@ -492,10 +492,17 @@ int sync();
 inline uintptr_t invoke(Function function)
 {
     uintptr_t result;
+#    if ARCH(I386)
     asm volatile("int $0x82"
                  : "=a"(result)
                  : "a"(function)
                  : "memory");
+#    else
+    asm volatile("syscall"
+                 : "=a"(result)
+                 : "a"(function)
+                 : "rcx", "r11", "memory");
+#    endif
     return result;
 }
 
@@ -503,10 +510,17 @@ template<typename T1>
 inline uintptr_t invoke(Function function, T1 arg1)
 {
     uintptr_t result;
+#    if ARCH(I386)
     asm volatile("int $0x82"
                  : "=a"(result)
                  : "a"(function), "d"((uintptr_t)arg1)
                  : "memory");
+#    else
+    asm volatile("syscall"
+                 : "=a"(result)
+                 : "a"(function), "D"((uintptr_t)arg1)
+                 : "rcx", "r11", "memory");
+#    endif
     return result;
 }
 
@@ -514,10 +528,17 @@ template<typename T1, typename T2>
 inline uintptr_t invoke(Function function, T1 arg1, T2 arg2)
 {
     uintptr_t result;
+#    if ARCH(I386)
     asm volatile("int $0x82"
                  : "=a"(result)
                  : "a"(function), "d"((uintptr_t)arg1), "c"((uintptr_t)arg2)
                  : "memory");
+#    else
+    asm volatile("syscall"
+                 : "=a"(result)
+                 : "a"(function), "D"((uintptr_t)arg1), "S"((uintptr_t)arg2)
+                 : "rcx", "r11", "memory");
+#    endif
     return result;
 }
 
@@ -525,10 +546,17 @@ template<typename T1, typename T2, typename T3>
 inline uintptr_t invoke(Function function, T1 arg1, T2 arg2, T3 arg3)
 {
     uintptr_t result;
+#    if ARCH(I386)
     asm volatile("int $0x82"
                  : "=a"(result)
                  : "a"(function), "d"((uintptr_t)arg1), "c"((uintptr_t)arg2), "b"((uintptr_t)arg3)
                  : "memory");
+#    else
+    asm volatile("syscall"
+                 : "=a"(result)
+                 : "a"(function), "D"((uintptr_t)arg1), "S"((uintptr_t)arg2), "d"((uintptr_t)arg3)
+                 : "rcx", "r11", "memory");
+#    endif
     return result;
 }
 #endif

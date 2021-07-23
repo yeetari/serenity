@@ -26,6 +26,10 @@ struct MemoryManagerData;
 struct ProcessorMessageEntry;
 
 #if ARCH(X86_64)
+#    define MSR_EFER 0xc0000080
+#    define MSR_STAR 0xc0000081
+#    define MSR_LSTAR 0xc0000082
+#    define MSR_SFMASK 0xc0000084
 #    define MSR_FS_BASE 0xc0000100
 #    define MSR_GS_BASE 0xc0000101
 #endif
@@ -110,6 +114,10 @@ class Processor {
     AK_MAKE_NONMOVABLE(Processor);
 
     Processor* m_self;
+
+#if ARCH(X86_64)
+    void* m_user_stack;
+#endif
 
     DescriptorTablePointer m_gdtr;
     Descriptor m_gdt[256];

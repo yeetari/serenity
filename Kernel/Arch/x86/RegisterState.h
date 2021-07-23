@@ -112,10 +112,11 @@ struct [[gnu::packed]] RegisterState {
         arg2 = ecx;
         arg3 = ebx;
 #else
+        // The syscall instruction clobbers rcx, so we must use a different calling convention to 32-bit.
         function = rax;
-        arg1 = rdx;
-        arg2 = rcx;
-        arg3 = rbx;
+        arg1 = rdi;
+        arg2 = rsi;
+        arg3 = rdx;
 #endif
     }
 
